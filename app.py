@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from routes.user import user
 
 description = "This is a practice demo app to undertand CRUD application better"
 
@@ -9,6 +9,7 @@ app = FastAPI(
     description=description
 )
 
+app.include_router(user)
 
 @app.get("/")
 def root():
