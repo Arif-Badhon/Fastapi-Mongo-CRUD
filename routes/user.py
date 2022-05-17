@@ -1,4 +1,3 @@
-from unicodedata import name
 from fastapi import APIRouter
 from models.user import User, Admin, UpdateUser, UpdateAdmin
 from database.database import user_collection
