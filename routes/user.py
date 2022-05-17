@@ -18,11 +18,9 @@ def create_admin(admin: Admin):
     user_collection.insert_one(dict(admin))
     return serializeList(user_collection.find({'role' : 'admin'}))
 
-@user.put('/edit_admin_data/{id}')
+@user.patch('/edit_admin_data/{id}')
 def edit_admin(id, admin: Admin):
-    user_collection.find_one_and_update({"_id":ObjectId(id)},{
-        "$set":dict(admin)
-    })
+    user_collection.find_one_and_update({"_id":ObjectId(id)},{"$set":dict(admin)})
     return serializeDict(user_collection.find_one({"_id":ObjectId(id)}))
 
 @user.delete('/delete_admin/{id}')
@@ -38,6 +36,10 @@ def find_all_user():
 def edit_user_data(id, user: User):
     user_collection.find_one_and_update({"_id": ObjectId(id)},{"$set":dict(user)})
     return serializeDict (user_collection.find_one({"_id":ObjectId(id)}))
+
+@user.delete('/delete_user/{id}')
+def delete_user(id, user: User):
+    return serializeDict(user_collection.find_one_and_delete({"_id": ObjectId(id)}))
 
 #For Indivisual User
 @user.post('/create_individual_basic_user')
