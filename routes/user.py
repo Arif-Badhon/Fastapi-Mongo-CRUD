@@ -1,5 +1,6 @@
+from unicodedata import name
 from fastapi import APIRouter
-from models.user import User, Admin
+from models.user import User, Admin, UpdateUser, UpdateAdmin
 from database.database import user_collection
 from schemas.user import serializeDict, serializeList
 from bson import ObjectId
@@ -19,8 +20,8 @@ def create_admin(admin: Admin):
     return serializeList(user_collection.find({'role' : 'admin'}))
 
 @user.patch('/edit_admin_data/{id}')
-def edit_admin(id, admin: Admin):
-    user_collection.find_one_and_update({"_id":ObjectId(id)},{"$set":dict(admin)})
+def edit_admin(id, admin: UpdateAdmin):
+    user_collection.find_one_and_update({"_id":ObjectId(id)},{"$set":admin.dict(exclude_unset=True)})
     return serializeDict(user_collection.find_one({"_id":ObjectId(id)}))
 
 @user.delete('/delete_admin/{id}')
@@ -32,9 +33,9 @@ def delete_admin(id, admin: Admin):
 def find_all_user():
     return serializeList(user_collection.find())
 
-@user.put('/edit_user_data/{id}')
-def edit_user_data(id, user: User):
-    user_collection.find_one_and_update({"_id": ObjectId(id)},{"$set":dict(user)})
+@user.patch('/edit_user_data/{id}')
+def edit_user_data(id, user: UpdateUser):
+    user_collection.update_one({"_id": ObjectId(id)},{"$set":user.dict(exclude_unset=True)})
     return serializeDict (user_collection.find_one({"_id":ObjectId(id)}))
 
 @user.delete('/delete_user/{id}')

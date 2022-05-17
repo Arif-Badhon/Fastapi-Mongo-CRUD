@@ -2,19 +2,34 @@ from typing import Optional
 from pydantic import BaseModel
 
 class User(BaseModel):
-    name: Optional[str]
-    email: Optional[str]
-    company : Optional[str]
-    designation : Optional[str]
-    password: Optional[str]
-    role : Optional[str]
-    type : Optional[str]
+    name: str
+    email: str
+    company : str
+    designation : str
+    password: str
+    role : str
+    type : str
     
 class Admin(BaseModel):
+    name: str
+    email: str
+    company : str
+    designation : str
+    password: str
+    role : str = 'admin'
+    type : str = None
+
+
+class UpdateUser(BaseModel):
     name: Optional[str]
     email: Optional[str]
-    company : Optional[str]
-    designation : Optional[str]
+    company: Optional[str]
+    designation: Optional[str]
     password: Optional[str]
-    role : Optional[str] = 'admin'
-    type : Optional[str] = None
+
+class UpdateAdmin(BaseModel):
+    name: Optional[str]
+    email: Optional[str]
+    company: Optional[str]
+    designation: Optional[str]
+    password: Optional[str]
